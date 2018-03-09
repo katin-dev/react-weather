@@ -4,12 +4,6 @@ import logo from './logo.svg';
 import data from './weather-data';
 import './App.css';
 
-
-/* window.setInterval(() => {
-  data.push(['05.16:26', Math.random() * 500]);
-  eventEmitter.emit("update", data);
-}, 1000); */
-
 class App extends Component {
 
   render() {
