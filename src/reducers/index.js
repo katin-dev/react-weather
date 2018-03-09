@@ -35,30 +35,32 @@ export function IndexReducer (state = { data: [] }, action) {
           values.push(parseInt(row.co2));
         });
 
-        // Из полученных интервалов сформируем данные для графика
-        const plotData = chunks.map((chunk) => {
-          return [
-            chunk.start.getHours() + ':' + chunk.start.getMinutes(),
-            Math.round(_.sum(chunk.values) / chunk.values.length)
-          ]
-        });
-
-        return Object.assign({}, state, { data: plotData });
+        return Object.assign({}, state, { data: chunks });
       }
 
       break;
 
     case ACTION_SINGLE_UPDATE:
-      let newData = state.data.concat([
-        [action.payload.label, action.payload.value]
-      ]);
+      const date  = new Date(action.payload.date);
+      const value = parseInt(action.payload.value);
 
-      // Делаем ограничение по размеру массива
-      if (newData.length > 1000 )  {
-        newData.shift();
+      let chunks = [];
+      const lastChunk = state.data.pop();
+
+      if (date.getTime() - lastChunk.start.getTime() > intervalMinutes * 60000) {
+        // Положим интервал в хранилище
+        chunks = state.data.concat(lastChunk, {
+          start: date,
+          values: [value]
+        });
+      } else {
+        lastChunk.values.push(value);
+        chunks = state.data.concat(lastChunk);
       }
 
-      return Object.assign({}, state, { data: newData });
+      console.log(chunks);
+
+      return Object.assign({}, state, { data: chunks });
     default:
       return state;
   }
