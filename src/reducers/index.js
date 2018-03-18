@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 // За какой промежуток усредняем данные
-const intervalMinutes = 1;
+const intervalMinutes = 5;
 
 export const ACTION_BULK_UPDATE   = 'bulk_update';
 export const ACTION_SINGLE_UPDATE = 'single_update';

@@ -25,13 +25,25 @@ class Plot extends Component {
           backgroundColor: 'rgba(75,192,192,0.4)',
           borderColor: 'rgba(75,192,192,1)',
           pointRadius: 0,
+          lineTension: 0,
+          borderWidth: 1,
           data: values,
         }
       ]
     };
 
+    const options = {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+
     return (
-      <Line data={ plotData } height={100} />
+      <Line data={ plotData } height={100} options={options} />
     );
   }
 }
