@@ -48,7 +48,10 @@ export function IndexReducer (state = { data: [] }, action) {
       const lastChunk = state.data.pop();
 
       if (date.getTime() - lastChunk.start.getTime() > intervalMinutes * 60000) {
-        // Положим интервал в хранилище
+        // Прежде чем положить новый чанк, удалим самый первый. Таким образом реализуем "очередь"
+        state.data.shift();
+
+        // Положим новый интервал в хранилище чанков
         chunks = state.data.concat(lastChunk, {
           start: date,
           values: [value]
@@ -58,7 +61,7 @@ export function IndexReducer (state = { data: [] }, action) {
         chunks = state.data.concat(lastChunk);
       }
 
-      console.log(chunks);
+      console.log('chunks', chunks.length);
 
       return Object.assign({}, state, { data: chunks });
     default:
